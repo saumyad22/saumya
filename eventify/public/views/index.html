@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang=en>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Eventify - A place where events come to life!</title>
+		<link rel="stylesheet" href="/css/bootstrap.css">
+		<link rel="sytlesheet" href="/css/bootstrap.theme.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100' rel='stylesheet' type='text/css'>
+    <script src="/js/jquery-2.1.4.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="/js/main.js"></script>
+    <style>
+      .navbar-default {
+        background-color: #1b39a8;
+        border: 0px
+      }
+      .navbar-brand {
+        max-width: 75%;
+      }
+      .pull-center{
+        margin: 0 auto;
+      }
+      .top-buffer {
+        margin-top:20px;
+      }
+      .bottom-buffer {
+        margin-bottom: 20px;
+      }
+      .zero-top {
+        margin-top: 0px;
+      }
+      .event-address {
+        margin-top: 25px;
+        font-family: 'Roboto', sans-serif;
+      }
+      .event-details {
+        background-color: #fff;
+        padding: 10px
+      }
+      .img-responsive {
+        margin: 0 auto
+      }
+      body {
+        background-color: #FAFAFA;
+      }
+      .event-card {
+        box-shadow: 0 2px 20px 0 rgba(0,0,0,0.37);
+        display: inline-block;
+        margin-left: 25px;
+        margin-bottom: 10px;
+      }
+      #createEventBtn {
+        position: fixed;
+        right: 0;
+        top: 85%;
+        margin-right: 20px;
+        border-radius: 100%;
+        background-color: #DB4437;
+        color: white;
+        box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28)
+      }
+
+      #createEventBtn:focus, #createEventBtn:active {
+        outline: none !important;
+      }
+
+      .attend {
+        border-radius: 100%;
+        background-color: #4274EC;
+        color: white;
+        box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28)
+      }
+
+      .attend:focus, .attend:active {
+        outline: none !important;
+      }
+
+      .sticky-bottom {
+        position: fixed;
+        bottom: 10%;
+      }
+
+    </style>
+	</head>
+	<body>
+    <div id="content-holder" class="container">
+      <!-- navbar -->
+      <div class="navbar navbar-default">
+        <div class="container-fluid">
+          <!-- navbar contents -->
+
+          <div class="navbar-header">
+            <!-- brand image! -->
+            <a class="navbar-brand" href="#">
+              <img alt="Brand" class="img-responsive" src="https://eventbrite-s3.s3.amazonaws.com/marketing/landingpages/shared/images/eb-logo.png">
+            </a>
+          </div>
+
+          <div id="navbarForm" class="pull-right">
+            <!-- Event search form -->
+            <form class="form-inline pull-left navbar-form" role="form">
+                  <div class="form-group">
+                      <input type="text" class="form-control" placeholder="Fremont, CA">
+                  </div>
+                  <button type="submit" class="btn btn-primary"> Search </button>
+            </form>
+
+            <!-- Register and Sign-In buttons -->
+            <a href="#" id="registerBtn" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#registerModal">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  Register
+            </a>
+            <a href="#" id="signInBtn" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                  Sign In
+                  <span class="caret"></span>
+            </a>
+            <!-- Sign-In dropdown form -->
+            <div class="dropdown-menu" style="padding: 10px; width: 300px">
+              <form id="signInForm">
+                <div class="form-group">
+                  <input id="username" class="form-control input-md" type="text" placeholder="Username"/>
+                </div>
+                <div class="form-group">
+                  <input id="password" class="form-control input-md" type="text" placeholder="Password"/>
+                </div>
+                <input class="btn btn-primary pull-right" type="submit" name="commit" value="Sign In" />
+              </form>
+            </div>
+          </div>
+
+          <div class="modal fade" id="createEventModal" tabIndex="-1" role="dialog" aria-labelledby="createEventModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+              <div class="modal-content">
+                <div class="modal-header"><h3> Create an Event </h3> </div>
+                <div class="modal-body">
+                  <!-- actual create event form -->
+                    <form class="form">
+                        <div class="form-group">
+                            <input id="eventName" class="form-control" type="text" placeholder="Event name" />
+                        </div>
+                        <div class="form-group">
+                            <input id="eventDate" class="form-control" type="text" placeholder="DAY, MON DD YYYY" />
+                        </div>
+                        <div class="form-group">
+                            <input id="eventAddress" class="form-control" type="text" placeholder="Address" />
+                        </div>
+                        <input class="btn btn-primary" type="submit" name="createEvent" value="Create Event" />
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Register modal form -->
+          <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"> <h3> Register with Eventify! </h3> </div>
+                    <div class="modal-body">
+                      <!-- Actual registration form -->
+                      <form class="form" id="registrationForm">
+                          <div class="form-group">
+                              <input id="ruser" class="form-control" type="text" placeholder="Username" />
+                          </div>
+                          <div class="form-group">
+                              <input id="remail" class="form-control" type="text" placeholder="Email" />
+                          </div>
+                          <div class="form-group">
+                              <input id="rpassword" class="form-control" type="password" placeholder="Password" />
+                          </div>
+                          <div class="form-group">
+                              <input id="rptpassword" class="form-control" type="password"
+                                      placeholder="Repeat Password" />
+                          </div>
+                          <input class="btn btn-primary" type="submit" name="register" value="Register" />
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                        <h5 style="display: inline-block;"> Already have an account? </h5> <a href="#"> Sign In </a>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+        </div> <!-- // container-fluid -->
+      </div> <!-- // navbar, navbar-default -->
+
+      <!-- promo image -->
+      <div class="row">
+        <div class="col-md-12">
+          <img class="img-responsive"
+                src="http://lorempixel.com/1280/500/">
+        </div>
+      </div>
+
+      <!-- events -->
+      <div class="row top-buffer" style="display: none;">
+
+        <!-- event 1 -->
+        <div class="col-md-4">
+          <div class="event-card">
+            <img class="img-responsive" src="http://lorempixel.com/300/200/nightlife">
+            <div class="event-details text-uppercase pull-center">
+              <h5>SAT, AUG 29 12:00 PM</h5>
+              <h4 class="zero-top">Bootstrap meetup 2015</h4>
+              <hr />
+              <h6 class="event-address">
+                <a href="#">
+                    <span class="pull-right glyphicon glyphicon-plus-sign" style="font-size: 2em; overflow: hidden"></span>
+                </a>
+                38850 Farwell Dr, Fremont, CA 94536
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div> <!-- row ends here -->
+    </div> <!-- container ends here -->
+    <button id="createEventBtn" class="btn btn-default btn-lg" data-toggle="modal" data-target="#createEventModal">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </button>
+	</body>
+</html>
